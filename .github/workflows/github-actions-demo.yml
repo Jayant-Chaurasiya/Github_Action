@@ -20,7 +20,7 @@ jobs:
         path: DEMO_ZIP_TOOL
 
     - name: List demo folder contents
-      run: ls -la demo || echo "demo folder not found"
+      run: ls -la Demo || echo "Demo folder not found"
     - name: Copy getData file to target repository demo folder
       run: |
 
