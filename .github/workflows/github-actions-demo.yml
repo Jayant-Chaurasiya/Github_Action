@@ -42,4 +42,4 @@ jobs:
         fi
         
         git commit -m "Add GetData.txt to Demo2 folder"
-        git push origin main
+        git push origin master
