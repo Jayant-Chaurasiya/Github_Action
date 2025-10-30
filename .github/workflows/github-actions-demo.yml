@@ -1,5 +1,4 @@
 name: Sync folder to another repo
-echo "HII"
 on:
   push:
     branches: [Jayant-Chaurasiya-ver-1]                # change if needed
