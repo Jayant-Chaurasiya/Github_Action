@@ -3,7 +3,7 @@ name: Sync folder to another repo
 on:
   push:
     branches: [main]                # change if needed
-    paths: ["path/to/folder/**"]    # folder to watch in source repo
+    paths: ["Demo/**"]    # folder to watch in source repo
   workflow_dispatch:
 
 jobs:
@@ -16,7 +16,7 @@ jobs:
       - name: Checkout target
         uses: actions/checkout@v4
         with:
-          repository: TARGET_OWNER/TARGET_REPO     # change
+          repository: Jayant-Chaurasiya/DEMO_ZIP_TOOL     # change
           token: ${{ secrets.TARGET_REPO_TOKEN }}  # PAT secret
           path: target
           ref: main                                # target branch
