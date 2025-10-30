@@ -19,8 +19,12 @@ jobs:
         token: ${{ secrets.TARGET_REPO_TOKEN }}
         path: DEMO_ZIP_TOOL
 
+    - name: List demo folder contents
+      run: ls -la demo || echo "demo folder not found"
     - name: Copy getData file to target repository demo folder
       run: |
+
+      
         mkdir -p DEMO_ZIP_TOOL/Demo2
         cp  Demo/GetData.txt DEMO_ZIP_TOOL/Demo2
 
