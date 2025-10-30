@@ -2,7 +2,7 @@ name: Sync folder to another repo
 
 on:
   push:
-    branches: [main]                # change if needed
+    branches: [Jayant-Chaurasiya-ver-1]                # change if needed
     paths: ["Demo/**"]    # folder to watch in source repo
   workflow_dispatch:
 
