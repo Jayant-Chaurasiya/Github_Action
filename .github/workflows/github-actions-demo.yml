@@ -22,7 +22,7 @@ jobs:
     - name: Copy getData file to target repository demo folder
       run: |
         mkdir -p DEMO_ZIP_TOOL/demo2
-        cp demo/getData DEMO_ZIP_TOOL/demo2/getData
+        cp  Demo/GetData.txt DEMO_ZIP_TOOL/demo2/getData
 
     - name: Commit and push if there are changes
       run: |
