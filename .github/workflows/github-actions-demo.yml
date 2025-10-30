@@ -1,18 +1,37 @@
-name: Jayant Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
+name: Sync folder to another repo
+
+on:
+  push:
+    branches: [main]                # change if needed
+    paths: ["path/to/folder/**"]    # folder to watch in source repo
+  workflow_dispatch:
+
 jobs:
-  Explore-GitHub-Actions:
+  sync:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v5
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Checkout target
+        uses: actions/checkout@v4
+        with:
+          repository: TARGET_OWNER/TARGET_REPO     # change
+          token: ${{ secrets.TARGET_REPO_TOKEN }}  # PAT secret
+          path: target
+          ref: main                                # target branch
+
+      - name: Copy and push
         run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+          rm -rf target/path/in/target            # where to place folder in target repo
+          mkdir -p target/path/in/target
+          cp -a path/to/folder/. target/path/in/target/
+
+          cd target
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && echo "No changes" || {
+            git commit -m "Sync folder from $GITHUB_REPOSITORY@$GITHUB_SHA"
+            git push origin HEAD:main             # change if target branch differs
+          }
