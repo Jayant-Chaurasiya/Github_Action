@@ -27,18 +27,19 @@ jobs:
       
         mkdir -p DEMO_ZIP_TOOL/Demo2
         cp  Demo/GetData.txt DEMO_ZIP_TOOL/Demo2/
-
-    - name: Commit and push if there are changes
+    - name: Commit and push changes to target repo
       run: |
         cd DEMO_ZIP_TOOL
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
-
-        if git diff --quiet; then
-          echo "No changes detected"
+        
+        git add DEMO_ZIP_TOOL/Demo2/GetData.txt
+        
+        # Check if there are any changes to commit
+        if git diff --cached --quiet; then
+          echo "No changes to commit"
           exit 0
         fi
-
-        git add demo2/getData
-        git commit -m "Update getData file from source repository"
+        
+        git commit -m "Add GetData.txt to Demo2 folder"
         git push origin main
