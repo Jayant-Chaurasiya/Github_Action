@@ -1,36 +1,40 @@
-name: Sync folder to another repo
+name: Copy getData file to Another Repo
+
 on:
   push:
-    branches: [Jayant-Chaurasiya-ver-1]                # change if needed
-    paths: ["Demo/**"]    # folder to watch in source repo
-  workflow_dispatch:
+    branches: [Jayant-Chaurasiya-ver-1]    
 
 jobs:
-  sync:
+  copy-file:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v4
+    - name: Checkout source repository
+      uses: actions/checkout@v3
 
-      - name: Checkout target
-        uses: actions/checkout@v4
-        with:
-          repository: Jayant-Chaurasiya/DEMO_ZIP_TOOL     # change
-          token: ${{ secrets.TARGET_REPO_TOKEN }}  # PAT secret
-          path: target
-          ref: main                                # target branch
+    - name: Checkout target repository
+      uses: actions/checkout@v3
+      with:
+        repository: Jayant-Chaurasiya/DEMO_ZIP_TOOL
+        token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        path: DEMO_ZIP_TOOL
 
-      - name: Copy and push
-        run: |
-          rm -rf target/path/in/target            # where to place folder in target repo
-          mkdir -p target/path/in/target
-          cp -a path/to/folder/. target/path/in/target/
+    - name: Copy getData file to target repository demo folder
+      run: |
+        mkdir -p DEMO_ZIP_TOOL/demo2
+        cp demo/getData DEMO_ZIP_TOOL/demo2/getData
 
-          cd target
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git diff --cached --quiet && echo "No changes" || {
-            git commit -m "Sync folder from $GITHUB_REPOSITORY@$GITHUB_SHA"
-            git push origin HEAD:main             # change if target branch differs
-          }
+    - name: Commit and push if there are changes
+      run: |
+        cd target-repo
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+        if git diff --quiet; then
+          echo "No changes detected"
+          exit 0
+        fi
+
+        git add demo2/getData
+        git commit -m "Update getData file from source repository"
+        git push origin main
