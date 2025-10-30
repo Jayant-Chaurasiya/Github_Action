@@ -24,7 +24,7 @@ jobs:
     - name: Copy getData file to target repository demo folder
       run: |
 
-      
+        echo "Hello  "+GetData.txt
         mkdir -p DEMO_ZIP_TOOL/Demo2
         cp  Demo/GetData.txt DEMO_ZIP_TOOL/Demo2/
     - name: Commit and push changes to target repo
